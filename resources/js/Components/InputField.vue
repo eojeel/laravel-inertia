@@ -1,6 +1,7 @@
 <script setup>
 const model = defineModel();
 defineProps({
+    name: String,
     label: String,
     icon: String,
     placeholder: {
