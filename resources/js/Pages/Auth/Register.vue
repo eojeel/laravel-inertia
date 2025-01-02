@@ -3,14 +3,14 @@
 import Container from "../../Components/Container.vue";
 import InputField from "../../Components/InputField.vue";
 import PrimaryButton from "../../Components/PrimaryButton.vue";
-import {Link} from "@inertiajs/vue3";
+import Link from "../../Components/Link.vue";
 </script>
 
 <template>
     <container class="w-1/2">
         <div class="mb-8 text-center">
             <h1 class="text-3xl font-bold mb-2">Register User</h1>
-            <p>Already Have an Account? <Link href="/login">Login</Link></p>
+            <p>Already Have an Account? <Link route="/login" name="login" /></p>
         </div>
 
         <form class="space-y-6">

@@ -3,8 +3,9 @@
 import Container from "../../Components/Container.vue";
 import InputField from "../../Components/InputField.vue";
 import PrimaryButton from "../../Components/PrimaryButton.vue";
-import {useForm, Head, Link} from "@inertiajs/vue3";
+import {useForm, Head} from "@inertiajs/vue3";
 import Error from "../../Components/Error.vue";
+import Link from "../../Components/Link.vue";
 
 const form = useForm({
     email:"",
@@ -34,7 +35,7 @@ const submit = () => {
             <InputField label="Password" type="password" icon="key" v-model="form.password"/>
 
             <div class="flex items-center justify-between">
-                <Link href="/">Forgot Password!</Link>
+                <Link route="/register" name="Register?" />
             </div>
             <PrimaryButton :disabled="form.processing">Login</PrimaryButton>
         </form>
