@@ -6,6 +6,7 @@ import PrimaryButton from "../../Components/PrimaryButton.vue";
 import {useForm, Head} from "@inertiajs/vue3";
 import Error from "../../Components/Error.vue";
 import Link from "../../Components/Link.vue";
+import CheckBox from "../../Components/CheckBox.vue";
 
 const form = useForm({
     email:"",
@@ -37,6 +38,7 @@ const submit = () => {
             <div class="flex items-center justify-between">
                 <Link route="/register" name="Register?" />
             </div>
+            <check-box name="remember" v-model="form.remember">Remember me!</check-box>
             <PrimaryButton :disabled="form.processing">Login</PrimaryButton>
         </form>
     </container>
