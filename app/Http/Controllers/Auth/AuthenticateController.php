@@ -17,8 +17,6 @@ class AuthenticateController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        dd($request->remember);
-
         $attributes = $request->validate([
             'email' => ['required', 'email'],
             'password' => ['required'],
