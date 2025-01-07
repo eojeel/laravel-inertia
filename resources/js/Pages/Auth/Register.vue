@@ -5,6 +5,7 @@ import InputField from "../../Components/InputField.vue";
 import PrimaryButton from "../../Components/PrimaryButton.vue";
 import Link from "../../Components/Link.vue";
 import {useForm} from "@inertiajs/vue3";
+import Error from "../../Components/Error.vue";
 
 const form = useForm({
     name:"",
@@ -27,6 +28,8 @@ const submit = () => {
             <h1 class="text-3xl font-bold mb-2">Register User</h1>
             <p>Already Have an Account? <Link route="/login" name="login" /></p>
         </div>
+
+        <Error :errors="form.errors" />
 
         <form class="space-y-6" @submit.prevent="submit">
             <InputField label="Name" icon="id-badge" v-model="form.name"/>

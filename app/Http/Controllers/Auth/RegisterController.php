@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RegisterRequest;
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Response;
 
@@ -16,16 +17,13 @@ class RegisterController extends Controller
         return Inertia('Auth/Register');
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(RegisterRequest $request): RedirectResponse
     {
-        $attributes = $request->validate([
-            'name' => 'required|max:255',
-            'email' => 'required|email|max:255|unique:users',
-            'password' => 'required|min:6|confirmed',
-            'password_confirmation' => 'required|same:password',
-        ]);
+        $attributes = $request->validated();
 
         $user = User::create($attributes);
+
+        event(new Registered($user));
 
         Auth::login($user);
 
