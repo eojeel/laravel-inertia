@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\AuthenticateController;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\ResetPasswordController;
 use Illuminate\Support\Facades\Route;
 
 Route::inertia('/', 'Home')->middleware(['verified'])->name('home');
@@ -13,6 +14,10 @@ Route::middleware('guest')->group(function () {
 
     Route::get('/login', [AuthenticateController::class, 'show'])->name('login');
     Route::post('/login', [AuthenticateController::class, 'store']);
+
+    Route::get('/forgot-password', [ResetPasswordController::class, 'show'])->name('password.request');
+    Route::post('/forgot-password', [ResetPasswordController::class, 'email'])->name('password.email');
+    Route::get('/reset-password/{token}', [ResetPasswordController::class, 'reset'])->name('password.reset');
 });
 
 Route::middleware('auth')->group(function () {

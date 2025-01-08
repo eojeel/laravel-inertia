@@ -7,7 +7,6 @@ use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
-use Redirect;
 use Request;
 
 class EmailVerificationController extends Controller
@@ -15,7 +14,7 @@ class EmailVerificationController extends Controller
     public function notice(): Response
     {
         return Inertia::render('Auth/VerifyEmail', [
-            'message' => session('message')
+            'message' => session('message'),
         ]);
     }
 
