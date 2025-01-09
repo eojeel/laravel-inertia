@@ -12,7 +12,9 @@ class AuthenticateController extends Controller
 {
     public function show(): Response
     {
-        return Inertia('Auth/Login');
+        return Inertia('Auth/Login', [
+            'status' => session('status'),
+        ]);
     }
 
     public function store(LoginRequest $request): RedirectResponse
@@ -22,12 +24,18 @@ class AuthenticateController extends Controller
         if (Auth::attempt($attributes, $request->remember)) {
             $request->session()->regenerate();
 
-            return redirect()->intended();
+            return redirect()->route('home');
         }
 
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
-        ])
-            ->onlyInput('email');
+        ])->onlyInput('email');
+    }
+
+    public function logout(): RedirectResponse
+    {
+        Auth::logout();
+
+        return redirect()->route('home');
     }
 }
