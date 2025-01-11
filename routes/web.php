@@ -1,12 +1,16 @@
 <?php
 
 use App\Http\Controllers\Auth\AuthenticateController;
+use App\Http\Controllers\Auth\ConfirmPasswordController;
 use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResetPasswordController;
 use Illuminate\Support\Facades\Route;
 
-Route::inertia('/', 'Home')->middleware(['verified'])->name('home');
+Route::inertia('/', 'Home')->name('home');
+
+Route::inertia('/dashboard', 'Dashboard')->middleware(['auth', 'verified'])->name('dashboard');
+Route::inertia('/profile', 'Profile/Edit')->middleware(['auth', 'password.confirm'])->name('profile.edit');
 
 Route::middleware('guest')->group(function () {
     Route::get('/register', [RegisterController::class, 'show'])->name('register');
@@ -24,9 +28,14 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::get('/logout', [AuthenticateController::class, 'logout'])->name('logout');
 
-    Route::get('/email/verify', [EmailVerificationController::class, 'notice'])->name('verification.notice');
-    Route::get('/email/verify/{id}/{hash}', [EmailVerificationController::class, 'handler'])->middleware(['signed'])->name('verification.verify');
+    Route::controller(EmailVerificationController::class)->group(function () {
+        Route::get('/email/verify', 'notice')->name('verification.notice');
+        Route::get('/email/verify/{id}/{hash}', 'handler')->middleware(['signed'])->name('verification.verify');
+        Route::post('/email/verification-notification', 'resend')->middleware(['throttle:6,1'])->name('verification.send');
+    });
 
-    Route::post('/email/verification-notification', [EmailVerificationController::class, 'resend'])->middleware(['throttle:6,1'])->name('verification.send');
-
+    Route::controller(ConfirmPasswordController::class)->group(function () {
+        Route::get('/confirm-password', 'create')->name('password.confirm');
+        Route::post('confirm-password', 'store')->middleware(['throttle:6,1'])->name('password.confirm');
+    });
 });

@@ -1,7 +1,7 @@
 <script setup>
 import {switchTheme} from "../theme.js";
 import NavLink from "../Components/NavLink.vue";
-import {usePage} from "@inertiajs/vue3";
+import {usePage, Link} from "@inertiajs/vue3";
 import {computed, ref} from "vue";
 
 const page = usePage();
@@ -23,7 +23,24 @@ const show = ref(false)
                     <div v-show="show"
                          @click="show=false"
                          class="absolute z-50 top-16 right-0 bg-slate-800 text-white rounded-lg border-slate-700 border overflow-hidden w-40">
-                        <p>Logout</p>
+
+                        <Link
+                            :href="route('profile.edit')"
+                            class="block w-full px-6 py-3 hover:bg-slate-700 text-left">
+                            Profile
+                        </Link>
+
+                        <Link
+                        :href="route('dashboard')"
+                        class="block w-full px-6 py-3 hover:bg-slate-700 text-left">
+                        Dashboard
+                        </Link>
+
+                        <Link
+                            :href="route('logout')"
+                            class="block w-full px-6 py-3 hover:bg-slate-700 text-left">
+                            Logout
+                        </Link>
                     </div>
                 </div>
 

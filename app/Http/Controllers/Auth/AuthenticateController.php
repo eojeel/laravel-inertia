@@ -24,7 +24,7 @@ class AuthenticateController extends Controller
         if (Auth::attempt($attributes, $request->remember)) {
             $request->session()->regenerate();
 
-            return redirect()->route('home');
+            return redirect()->intended('dashboard');
         }
 
         return back()->withErrors([
