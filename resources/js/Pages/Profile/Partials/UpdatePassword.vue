@@ -61,6 +61,8 @@ const submit = () =>
                 class="w-1/2"
             />
 
+            <p v-if="form.recentlySuccessful" class="text-green-500 font-medium">Saved</p>
+
             <PrimaryButton :disabled="form.processing">Update Password</PrimaryButton>
         </form>
     </Container>
