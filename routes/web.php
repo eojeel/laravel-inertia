@@ -28,6 +28,7 @@ Route::middleware('auth')->group(function () {
     Route::controller(ProfileController::class)->group(function () {
         Route::get('/profile', 'edit')->name('profile.edit');
         Route::patch('/profile', 'update')->name('profile.update');
+        route::put('/profile', 'updatePassword')->name('profile.updatePassword');
     });
 
     Route::controller(EmailVerificationController::class)->group(function () {

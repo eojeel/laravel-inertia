@@ -5,6 +5,7 @@ import PrimaryButton from "../../../Components/PrimaryButton.vue";
 import {router, useForm} from "@inertiajs/vue3";
 import Message from "../../../Components/Message.vue";
 import Error from "../../../Components/Error.vue";
+import Title from "../../../Components/Title.vue";
 
 const props = defineProps({
     user: Object,
@@ -32,7 +33,7 @@ const resendEmail = (e) => {
 <template>
     <Container clas="mb-6">
         <div class="mb-4">
-            <h1>Update Information</h1>
+            <Title>Update Information</Title>
             <p>Update your account's profile information.</p>
         </div>
 
@@ -58,12 +59,13 @@ const resendEmail = (e) => {
 
             <div v-if="user.email_verified_at === null"
             class="flex items-center gap-2">
-                <p>Your email address is unverified</p>
-                <button
-                class="text-indigo-500 font-medium underline dark:text-indigo-400 disabled:text-slate-400 disabled:cursor-wait"
-                @click="resendEmail">
-                    Click here to re-send email verification!
-                </button>
+                <p>Your email address is unverified
+                    <button
+                        class="text-indigo-500 font-medium underline dark:text-indigo-400 disabled:text-slate-400 disabled:cursor-wait"
+                        @click="resendEmail">
+                        Click here to re-send email verification!
+                    </button>
+                </p>
             </div>
             <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
         </form>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -34,6 +35,20 @@ class ProfileController extends Controller
         }
 
         $request->user()->save();
+
+        return redirect()->route('profile.edit');
+    }
+
+    public function updatePassword(Request $request): RedirectResponse
+    {
+        $attributes = $request->validate([
+            'current_password' => 'required|current_password',
+            'new_password' => 'required|min:8|confirmed',
+        ]);
+
+        $request->user()->update([
+            'password' => Hash::make($attributes['new_password']),
+        ]);
 
         return redirect()->route('profile.edit');
     }
