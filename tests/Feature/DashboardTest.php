@@ -21,5 +21,5 @@ it('unverified user cannot view dashboard', function () {
 
     $response = $this->get(route('dashboard'));
 
-    $response->assertRedirect(route('login'));
+    $response->assertRedirect(route('verification.notice'));
 });

@@ -19,6 +19,7 @@ class LoginRequest extends FormRequest
         ];
     }
 
+    #[\Override]
     public function messages(): array
     {
         return [
