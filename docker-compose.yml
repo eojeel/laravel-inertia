@@ -1,11 +1,11 @@
 services:
     laravel.test:
         build:
-            context: './vendor/laravel/sail/runtimes/8.4'
+            context: ./vendor/laravel/sail/runtimes/8.4
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
-        image: 'sail-8.4/app'
+        image: sail-8.4/app
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
@@ -21,15 +21,18 @@ services:
             - '.:/var/www/html'
         networks:
             - sail
-        depends_on: {  }
-    mailhog:
-        image: mailhog/mailhog
-        container_name: 'mailhog'
+        depends_on:
+            - mailpit
+    mailpit:
+        image: 'axllent/mailpit:latest'
         ports:
-            - "1025:1025"
-            - "8025:8025"
+            - '${FORWARD_MAILPIT_PORT:-1025}:1025'
+            - '${FORWARD_MAILPIT_DASHBOARD_PORT:-8025}:8025'
         networks:
             - sail
 networks:
     sail:
         driver: bridge
+volumes:
+    sail-mysql:
+        driver: local

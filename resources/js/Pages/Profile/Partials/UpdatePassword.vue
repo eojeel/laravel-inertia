@@ -10,7 +10,7 @@ import Error from "../../../Components/Error.vue";
 const form = useForm({
     current_password: "",
     new_password: "",
-    password_confirmation: "",
+    new_password_confirmation: "",
 });
 
 const submit = () =>
@@ -56,7 +56,7 @@ const submit = () =>
             <InputField
                 label="Confirm Password"
                 icon="key"
-                v-model="form.password_confirmation"
+                v-model="form.new_password_confirmation"
                 type="password"
                 class="w-1/2"
             />

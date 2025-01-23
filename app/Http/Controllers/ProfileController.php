@@ -37,7 +37,7 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        return redirect()->route('profile.edit');
+        return redirect()->route('profile.edit')->with('status', 'Profile updated.');
     }
 
     public function updatePassword(Request $request): RedirectResponse
@@ -51,7 +51,7 @@ class ProfileController extends Controller
             'password' => Hash::make($attributes['new_password']),
         ]);
 
-        return redirect()->route('profile.edit');
+        return redirect()->route('profile.edit')->with('status', 'Password updated.');
     }
 
     public function destory(Request $request): RedirectResponse
