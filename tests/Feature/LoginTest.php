@@ -2,12 +2,14 @@
 
 use App\Models\User;
 
-use function Pest\Laravel\{actingAs, get, post};
+use function Pest\Laravel\actingAs;
+use function Pest\Laravel\get;
+use function Pest\Laravel\post;
 
-it('can view the loging page', function() {
+it('can view the loging page', function () {
 
-    get(route('login'))->assertStatus(200);
-});
+get(route('login'))->assertStatus(200);
+    });
 
 it('a user can login', function () {
 
@@ -25,11 +27,11 @@ it('a user can login', function () {
     $response->assertRedirect(route('dashboard'));
 });
 
-it('fails on incorrect email login attempt', function() {
+it('fails on incorrect email login attempt', function () {
 
     $response = post('/login', [
         'email' => fake()->email,
-        'password' => fake()->password(8)
+        'password' => fake()->password(8),
     ]);
 
     $response->assertSessionHasErrors('email');
@@ -40,7 +42,7 @@ it('can log a user out', function () {
     $user = User::factory()->create();
 
     $response = actingAs($user)
-    ->get(route('logout'));
+        ->get(route('logout'));
     $response->assertRedirect(route('home'));
 
     expect(Auth::user())->toBeNull();

@@ -48,6 +48,5 @@ Route::middleware('auth')->group(function () {
 
 });
 
-
 Route::get('/', [ListingController::class, 'index'])->name('home');
 Route::resource('listing', ListingController::class)->except('index');

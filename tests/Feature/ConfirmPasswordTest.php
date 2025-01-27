@@ -2,10 +2,9 @@
 
 use App\Models\User;
 
-use function Pest\Laravel\{get, actingAs};
+use function Pest\Laravel\actingAs;
 
-it('can vew the confirm password page', function ()
-{
+it('can vew the confirm password page', function () {
     $user = User::factory()->create();
 
     $response = ActingAs($user)
@@ -15,8 +14,7 @@ it('can vew the confirm password page', function ()
 
 });
 
-it('can confirm a users password', function ()
-{
+it('can confirm a users password', function () {
     $password = fake()->password;
 
     $user = User::factory()->create(['password' => Hash::make($password)]);
@@ -30,8 +28,7 @@ it('can confirm a users password', function ()
 
 });
 
-it('fails password confirmation', function ()
-{
+it('fails password confirmation', function () {
     $user = User::factory()->create();
 
     $response = ActingAs($user)

@@ -30,7 +30,7 @@ it('can update name and show updated name', function () {
 
 });
 
-it('can update email and resets verified email', function() {
+it('can update email and resets verified email', function () {
 
     $user = User::Factory()->create();
 
@@ -74,7 +74,7 @@ it('can update password and show notification', function () {
 
 });
 
-it('can delete a user', function() {
+it('can delete a user', function () {
 
     $user = User::Factory()->create(['password' => bcrypt('password')]);
 

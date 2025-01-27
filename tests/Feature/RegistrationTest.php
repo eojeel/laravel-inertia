@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Auth\Events\Registered;
+
 use function Pest\Laravel\get;
 use function Pest\Laravel\post;
 
@@ -40,7 +41,5 @@ it('can create a user', function () {
 
     expect(Auth::check())->toBeTrue();
     expect(Auth::user()->name)->toBe($userData['name']);
-
-
 
 });
