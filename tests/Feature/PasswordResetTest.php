@@ -2,15 +2,12 @@
 
 use App\Models\User;
 use Illuminate\Auth\Events\PasswordReset;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 
-use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 use function Pest\Laravel\post;
-use function Pest\Laravel\withoutExceptionHandling;
 
 it('can view the password reset page', function () {
 
@@ -54,23 +51,21 @@ it('can reset view reset page with token', function () {
 
 it('can reset a password', function () {
 
-    withoutExceptionHandling();
-
     Event::fake([PasswordReset::class]);
 
     $user = User::factory()->create();
 
     $token = Password::broker()->createToken($user);
 
-    $response = ActingAs($user)
-        ->post(route('password.update', [
-            'token' => $token,
-            'email' => $user->email,
-            'password' => $password = fake()->password,
-        ]));
+    $response = post(route('password.update'), [
+        'token' => $token,
+        'email' => $user->email,
+        'password' => $password = fake()->password,
+        'password_confirmation' => $password,
+    ]);
 
     // Assert that the PasswordReset event was dispatched for the correct user.
-    Event::assertDispatched(PasswordReset::class, function ($event) use ($user) {
+    Event::assertDispatched(PasswordReset::class, static function ($event) use ($user) {
         return $event->user->id === $user->id;
     });
 
