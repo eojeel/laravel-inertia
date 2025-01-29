@@ -1,8 +1,22 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Auth\Events\Verified;
 use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Support\Facades\Event;
 use function Pest\Laravel\{get, post, actingAs};
+
+it('can view email vierification page', function () {
+
+    $user = User::factory()->create(['email_verified_at' => null]);
+
+    $response = actingAs($user)
+        ->get(route('verification.notice'));
+
+    $response->assertStatus(200);
+
+});
 
 it('email verification link can be resent', function () {
     Notification::fake();
@@ -18,23 +32,16 @@ it('email verification link can be resent', function () {
 });
 
 it('email verification can be handled', function () {
-    Notification::fake();
 
-    $user = User::factory()->create();
+    $user = User::factory()->create(['email_verified_at' => null]);
 
-    // Simulate sending the verification email
-    $notification = new VerifyEmail();
-    $notification->createUrlUsing(function ($notifiable) {
-        return 'http://example.com/verify?id='. $notifiable->getKey(). '&hash='. sha1($notifiable->getEmailForVerification());
-    });
-    $user->notify($notification);
+    $verificationUrl = URL::temporarySignedRoute(
+        'verification.verify',
+        now()->addMinutes(60),
+        ['id' => $user->id, 'hash' => sha1($user->email)]
+    );
 
-    // Get the verification URL from the notification
-    $verificationUrl = $user->notifications->first()->data['actionUrl'];
+    actingAs($user)->get($verificationUrl);
 
-    // Visit the verification URL
-    $response = get($verificationUrl);
-
-    $response->assertRedirect('home');
-    $this->assertTrue($user->fresh()->hasVerifiedEmail());
+    expect($user->fresh()->hasVerifiedEmail())->toBeTrue();
 });
