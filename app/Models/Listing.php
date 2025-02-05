@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,7 +8,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Listing extends Model
 {
+    /** @use HasFactory<\Database\Factories\ListingFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'title',
+        'desc',
+        'tags',
+        'emails',
+        'link',
+        'image',
+        'approved',
+    ];
 
     public function user(): BelongsTo
     {

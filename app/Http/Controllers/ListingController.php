@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Listing;
+use Inertia\Inertia;
 use Inertia\Response;
+use Request;
 
 class ListingController extends Controller
 {
@@ -12,13 +14,15 @@ class ListingController extends Controller
      */
     public function index(): Response
     {
-        return Inertia('Home');
+        return Inertia::render('Home', [
+            'listings' => Listing::with('user')->latest()->paginate(10),
+        ]);
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): void
+    public function create()
     {
         //
     }
@@ -26,7 +30,7 @@ class ListingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): void
+    public function store(Request $request)
     {
         //
     }
@@ -34,7 +38,7 @@ class ListingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id): void
+    public function show(Listing $listing)
     {
         //
     }
@@ -42,7 +46,7 @@ class ListingController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id): void
+    public function edit(Listing $listing)
     {
         //
     }
@@ -50,7 +54,7 @@ class ListingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id): void
+    public function update(Request $request, Listing $listing)
     {
         //
     }
@@ -58,7 +62,7 @@ class ListingController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id): void
+    public function destroy(Listing $listing)
     {
         //
     }
