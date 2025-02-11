@@ -1,5 +1,6 @@
 <script setup>
-import {list} from "postcss";
+import Link from "Link.vue";
+
 
 defineProps({
     listing: Object,
@@ -9,7 +10,7 @@ defineProps({
 <template>
 <div class="bg-white rounded-lg shadow-lg overflow-hidden dark:bg-slate-800 h-full flex flex-col justify-between">
     <div>
-        <link href="">
+        <Link href="">
             <img class="w-full h-48 object-cover object-center" :src="listing.image ? listing.image : '/storage/images/listing/default.png'">
         </link>
 
