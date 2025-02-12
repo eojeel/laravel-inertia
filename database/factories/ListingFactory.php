@@ -23,7 +23,7 @@ class ListingFactory extends Factory
             'title' => fake()->word(),
             'description' => fake()->paragraph(),
             'tags' => fake()->word(),
-            'image' => fake()->imageUrl(),
+            'image' => 'https://picsum.photos/seed/picsum/300/300',
             'approved' => 1,
         ];
     }

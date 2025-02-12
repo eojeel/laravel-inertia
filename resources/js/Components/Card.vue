@@ -1,6 +1,4 @@
 <script setup>
-import Link from "Link.vue";
-
 
 defineProps({
     listing: Object,
@@ -12,7 +10,7 @@ defineProps({
     <div>
         <Link href="">
             <img class="w-full h-48 object-cover object-center" :src="listing.image ? listing.image : '/storage/images/listing/default.png'">
-        </link>
+        </Link>
 
         <div class="p-4">
             <h3 class="font-bold text-xl mb-2">
