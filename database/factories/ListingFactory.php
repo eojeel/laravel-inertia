@@ -20,7 +20,7 @@ class ListingFactory extends Factory
 
         return [
             'user_id' => User::factory()->create(),
-            'title' => fake()->word(),
+            'title' => fake()->sentence(),
             'description' => fake()->paragraph(),
             'tags' => fake()->word(),
             'image' => 'https://picsum.photos/seed/picsum/300/300',

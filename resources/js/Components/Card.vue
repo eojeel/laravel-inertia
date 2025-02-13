@@ -14,7 +14,7 @@ defineProps({
 
         <div class="p-4">
             <h3 class="font-bold text-xl mb-2">
-                {{ listing.title.substring(0, 40)}}...
+                {{ listing.title.substring(0, 40) }}...
             </h3>
 
             <p>Listed On {{ new Date(listing.created_at).toLocaleDateString()}} By <button class="text-link">{{ listing.user.name }}</button></p>
