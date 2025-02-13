@@ -15,14 +15,15 @@ class ListingController extends Controller
     public function index(Request $request): Response
     {
         $listings = Listing::with('user')
-            ->filter(request(['search']))
+            ->filter(request(['search', 'user_id']))
             ->latest()
             ->paginate(10)
             ->withQueryString();
+
         // search
         return Inertia::render('Home', [
             'listings' => $listings,
-            'searchTerm' => $request->search
+            'searchTerm' => $request->search,
         ]);
     }
 

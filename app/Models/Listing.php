@@ -32,10 +32,15 @@ class Listing extends Model
      */
     public function scopeFilter(Builder $query, array $filters): void
     {
-        if (!empty($filters['search'])) {
-            $query
-                ->where('title', 'like', '%'.request('search').'%')
-                ->orWhere('desc', 'like', '%'.request('search').'%');
+        if (! empty($filters['search'])) {
+            $query->where(function ($q) {
+                $q->where('title', 'like', '%'.request('search').'%')
+                    ->orWhere('desc', 'like', '%'.request('search').'%');
+            });
+        }
+
+        if (! empty($filters['user_id'])) {
+            $query->where('user_id', request('user_id'));
         }
     }
 }
