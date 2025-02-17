@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Listing;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rules\In;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -33,9 +34,9 @@ class ListingController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): void
+    public function create(): Response
     {
-        //
+        return Inertia::render('Listing/Create');
     }
 
     /**
