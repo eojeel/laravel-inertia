@@ -15,8 +15,7 @@ class ListingController extends Controller
      */
     public function index(Request $request): Response
     {
-        $listings = Listing::whereHas('user', static fn (Builder $q) =>
-        $q->where('role', '!=', 'suspended'))
+        $listings = Listing::whereHas('user', static fn (Builder $q) => $q->where('role', '!=', 'suspended'))
             ->with('user')
             ->where('approved', true)
             ->filter(request(['search', 'user_id', 'tag']))
