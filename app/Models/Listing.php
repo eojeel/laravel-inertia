@@ -33,7 +33,7 @@ class Listing extends Model
     public function scopeFilter(Builder $query, array $filters): void
     {
         if (! empty($filters['search'])) {
-            $query->where(function ($q) {
+            $query->where(function ($q): void {
                 $q->where('title', 'like', '%'.request('search').'%')
                     ->orWhere('desc', 'like', '%'.request('search').'%');
             });
@@ -41,6 +41,10 @@ class Listing extends Model
 
         if (! empty($filters['user_id'])) {
             $query->where('user_id', request('user_id'));
+        }
+
+        if (! empty($filters['tag'])) {
+            $query->where('tags', 'like', '%'.request('tag').'%');
         }
     }
 }

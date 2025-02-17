@@ -10,6 +10,15 @@ defineProps({
 const selectUser = (id) => {
     router.get(route('home'), {
         user_id: id,
+        tag: params.tag,
+        search: params.search,
+    })
+}
+
+const selectTag = (tag) => {
+    router.get(route('home'), {
+        tag: tag,
+        user_id: params.user_id,
         search: params.search,
     })
 }
@@ -32,7 +41,10 @@ const selectUser = (id) => {
     </div>
 
     <div v-if="listing.tags" class="flex items-center gap-3 p-2">
-        <button class="bg-slate-500 text-white px-2 py-px rounded-full hover:bg-slate-700 dark:hover:bg-slate-900">{{listing.tags }}</button>
+        <div v-for="tag in listing.tags.split(',')" :key="tag">
+            <button @click="selectTag(tag)"
+                    class="bg-slate-500 text-white px-2 py-px rounded-full hover:bg-slate-700 dark:hover:bg-slate-900">{{ tag }}</button>
+            </div>
     </div>
 </div>
 </template>

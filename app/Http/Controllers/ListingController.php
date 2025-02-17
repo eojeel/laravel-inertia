@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Listing;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -14,8 +15,11 @@ class ListingController extends Controller
      */
     public function index(Request $request): Response
     {
-        $listings = Listing::with('user')
-            ->filter(request(['search', 'user_id']))
+        $listings = Listing::whereHas('user', static fn (Builder $q) =>
+        $q->where('role', '!=', 'suspended'))
+            ->with('user')
+            ->where('approved', true)
+            ->filter(request(['search', 'user_id', 'tag']))
             ->latest()
             ->paginate(10)
             ->withQueryString();
@@ -30,7 +34,7 @@ class ListingController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): void
     {
         //
     }
@@ -38,7 +42,7 @@ class ListingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request): void
     {
         //
     }
@@ -46,7 +50,7 @@ class ListingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Listing $listing)
+    public function show(Listing $listing): void
     {
         //
     }
@@ -54,7 +58,7 @@ class ListingController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Listing $listing)
+    public function edit(Listing $listing): void
     {
         //
     }
@@ -62,7 +66,7 @@ class ListingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Listing $listing)
+    public function update(Request $request, Listing $listing): void
     {
         //
     }
@@ -70,7 +74,7 @@ class ListingController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Listing $listing)
+    public function destroy(Listing $listing): void
     {
         //
     }

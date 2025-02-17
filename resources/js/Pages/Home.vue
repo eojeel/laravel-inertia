@@ -16,7 +16,7 @@ const form = useForm({
 })
 
 const search = () => {
-    router.get(route('home'), {search: form.search, user_id:params.user_id})
+    router.get(route('home'), {search: form.search, user_id:params.user_id, tag:params.tag})
 }
 
 </script>
