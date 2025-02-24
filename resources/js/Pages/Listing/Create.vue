@@ -28,7 +28,7 @@ const form = useForm({
 
             <Error :errors="form.errors" />
 
-            <form class="grid grid-cols-2 gap-6">
+            <form @submit.prevent="form.post(route('listing.store'))" class="grid grid-cols-2 gap-6">
                 <div class="space-y-6">
                     <InputField
                         label="Title"

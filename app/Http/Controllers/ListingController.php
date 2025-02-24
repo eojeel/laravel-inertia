@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ListingCreate;
 use App\Models\Listing;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rules\In;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -42,17 +44,29 @@ class ListingController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): void
+    public function store(ListingCreate $request): RedirectResponse
     {
-        //
+        $attributes = $request->validated();
+
+        if ($attributes['image']) {
+            $attributes['image'] = Storage::disk('public')->put('images/listing', $attributes['image']);
+        }
+
+        $listing = $request->user()->listing()->create($attributes);
+
+        return redirect()->route('listing.show', $listing)
+            ->with('success', 'Listing created successfully');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Listing $listing): void
+    public function show(Listing $listing): Response
     {
-        //
+        return inertia::render('Listing/Show', [
+            'listing' => $listing,
+            'user' => $listing->user->only('name', 'id'),
+        ]);
     }
 
     /**
