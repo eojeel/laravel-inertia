@@ -49,7 +49,7 @@ class ListingController extends Controller
         $attributes = $request->validated();
 
         if ($attributes['image']) {
-            $attributes['image'] = Storage::disk('public')->put('images/listing', $attributes['image']);
+            $attributes['image'] = Storage::disk('s3')->put('images/listing', $attributes['image']);
         }
 
         $listing = $request->user()->listing()->create($attributes);
