@@ -14,7 +14,7 @@ class Listing extends Model
 
     protected $fillable = [
         'title',
-        'desc',
+        'description',
         'tags',
         'emails',
         'link',
@@ -35,7 +35,7 @@ class Listing extends Model
         if (! empty($filters['search'])) {
             $query->where(function ($q): void {
                 $q->where('title', 'like', '%'.request('search').'%')
-                    ->orWhere('desc', 'like', '%'.request('search').'%');
+                    ->orWhere('description', 'like', '%'.request('search').'%');
             });
         }
 
