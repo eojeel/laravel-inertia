@@ -38,7 +38,9 @@ class ListingController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('Listing/Create');
+        return Inertia::render('Listing/Create', [
+            'image' => Storage::url('images/default.jpg'),
+        ]);
     }
 
     /**
@@ -49,7 +51,7 @@ class ListingController extends Controller
         $attributes = $request->validated();
 
         if ($attributes['image']) {
-            $attributes['image'] = Storage::disk('s3')->put('images/listing', $attributes['image']);
+            $attributes['image'] = Storage::disk('s3')->putFile('images/listing', $attributes['image']);
         }
 
         $listing = $request->user()->listing()->create($attributes);
@@ -65,7 +67,7 @@ class ListingController extends Controller
     {
         return inertia::render('Listing/Show', [
             'listing' => $listing,
-            'user' => $listing->user->only('name', 'id'),
+            'user' => $listing->user->only('id', 'name', 'email'),
         ]);
     }
 

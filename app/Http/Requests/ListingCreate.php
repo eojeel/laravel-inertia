@@ -17,7 +17,6 @@ class ListingCreate extends FormRequest
             'title' => 'required|max:255',
             'description' => 'required',
             'tags' => 'nullable|string|regex:/^[a-zA-Z0-9,]+$/',
-            'email' => 'nullable|email',
             'link' => 'nullable|url',
             'image' => 'nullable|file|max:3072|mimes:jpg,jpeg,png',
         ];

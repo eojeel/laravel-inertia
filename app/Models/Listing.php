@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Storage;
 
 class Listing extends Model
 {
@@ -46,5 +47,19 @@ class Listing extends Model
         if (! empty($filters['tag'])) {
             $query->where('tags', 'like', '%'.request('tag').'%');
         }
+    }
+
+    /**
+     * Get the image attribute.
+     */
+    public function getImageAttribute(?string $value): ?string
+    {
+        $disk = Storage::disk('s3');
+        if($value && $disk->exists($value))
+        {
+            return $disk->url($value);
+        }
+
+        return $disk->url('images/default.jpg');
     }
 }

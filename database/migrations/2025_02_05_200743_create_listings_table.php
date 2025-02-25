@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('title');
             $table->text('description');
             $table->string('tags')->nullable();
-            $table->string('email')->nullable();
             $table->string('link')->nullable();
             $table->string('image')->nullable();
             $table->boolean('approved')->default(0);

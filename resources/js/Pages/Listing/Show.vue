@@ -20,7 +20,7 @@ const selectTag = (tag) => {
     <head title="- Listing Details"/>
     <Container class="flex gap-4">
         <div class="w-1/4 rounded-md overflow-hidden">
-            <img :src="listing.image ? `/storage/${listing.image}` : '/storage/images/listing/default.png'" class="w-full h-full object-cover object-center">
+            <img :src="listing.image ? `${listing.image}` : '/storage/images/listing/default.png'" class="w-full h-full object-cover object-center">
         </div>
 
         <div class="w-3/4">
@@ -40,12 +40,12 @@ const selectTag = (tag) => {
 
             <div class="mb-6">
                     <p class="text-slate-400 w-full border-b mb-2">Contact Info</p>
-                    <div v-if="listing.email" class="flex items-center mb-2 gap-2">
+                    <div v-if="user.email" class="flex items-center mb-2 gap-2">
                         <i class="fa-solid fa-at"></i>
                             <p>Email:</p>
                             <a :href="`mailto:${listing.email}`"
                             class="text-link">
-                                {{ listing.email }}
+                                {{ user.email }}
                             </a>
                     </div>
                     <div v-if="listing.link" class="flex items-center mb-2 gap-2">

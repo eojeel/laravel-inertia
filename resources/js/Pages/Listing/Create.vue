@@ -8,11 +8,14 @@ import {useForm, Head} from "@inertiajs/vue3";
 import TextArea from "../../Components/TextArea.vue";
 import ImageUpload from "../../Components/ImageUpload.vue";
 
+defineProps({
+    image: String,
+})
+
 const form = useForm({
     title: null,
     description: null,
     tags: null,
-    email: null,
     link: null,
     image: null,
 });
@@ -51,18 +54,12 @@ const form = useForm({
                 </div>
                 <div class="space-y-6">
                     <InputField
-                        label="Email"
-                        icon="at"
-                        placeholder="email@example.com"
-                        v-model="form.email"
-                    />
-                    <InputField
                         label="External Link"
                         icon="up-right-from-square"
-                        placeholder="https://www.image.com/image.jpg"
-                        v-model="form.image"
+                        placeholder="https://www.laravel.com"
+                        v-model="form.url"
                     />
-                    <ImageUpload @image="(e) => form.image = e"></ImageUpload>
+                    <ImageUpload :defaultImage=image @image="(e) => form.image = e"></ImageUpload>
                 </div>
                 <div>
                     <PrimaryButton>Create Listing</PrimaryButton>
