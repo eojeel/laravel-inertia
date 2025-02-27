@@ -8,16 +8,18 @@ import {useForm, Head} from "@inertiajs/vue3";
 import TextArea from "../../Components/TextArea.vue";
 import ImageUpload from "../../Components/ImageUpload.vue";
 
-defineProps({
+const props = defineProps({
+    listing: Object,
     image: String,
 })
 
 const form = useForm({
-    title: null,
-    description: null,
-    tags: null,
-    link: null,
+    title: props.listing.title,
+    description: props.listing.description,
+    tags: props.listing.tags,
+    link: props.listing.link,
     image: null,
+    _method: 'PUT',
 });
 </script>
 
@@ -26,19 +28,19 @@ const form = useForm({
         <Head title="- Create Listing"/>
         <Container>
             <div class="mb-6">
-                <Title>Create Listing</Title>
+                <Title>Edit Listing</Title>
             </div>
 
             <Error :errors="form.errors" />
 
-            <form @submit.prevent="form.post(route('listing.store'))" class="grid grid-cols-2 gap-6">
+            <form @submit.prevent="form.post(route('listing.update', listing.id))" class="grid grid-cols-2 gap-6">
                 <div class="space-y-6">
                     <InputField
                         label="Title"
                         icon="heading"
                         placeholder="Title"
                         v-model="form.title"
-                        />
+                    />
                     <InputField
                         label="Tags (comma separated)"
                         icon="tags"
@@ -50,7 +52,7 @@ const form = useForm({
                         icon="newspaper"
                         placeholder="Description"
                         v-model="form.description"
-                        />
+                    />
                 </div>
                 <div class="space-y-6">
                     <InputField
@@ -59,10 +61,10 @@ const form = useForm({
                         placeholder="https://www.laravel.com"
                         v-model="form.url"
                     />
-                    <ImageUpload :defaultImage=image @image="(e) => form.image = e"></ImageUpload>
+                    <ImageUpload :defaultImage=props.listing.image @image="(e) => form.image = e"></ImageUpload>
                 </div>
                 <div>
-                    <PrimaryButton :disabled="form.processing">Create Listing</PrimaryButton>
+                    <PrimaryButton :disabled="form.processing">Update Listing</PrimaryButton>
                 </div>
             </form>
         </Container>

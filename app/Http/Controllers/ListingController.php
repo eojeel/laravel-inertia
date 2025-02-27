@@ -74,24 +74,47 @@ class ListingController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Listing $listing): void
+    public function edit(Listing $listing): Response
     {
-        //
+        return inertia::render('Listing/Edit', [
+            'listing' => $listing,
+            'image' => Storage::url('images/default.jpg'),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Listing $listing): void
+    public function update(ListingCreate $request, Listing $listing): RedirectResponse
     {
-        //
+        $attributes = $request->validated();
+
+        if ($attributes['image'] && $listing->image) {
+            Storage::disk('s3')->delete($listing->image);
+            $attributes['image'] = Storage::disk('s3')->putFile('images/listing', $attributes['image']);
+        } else {
+            $attributes['image'] = parse_url($listing->image, PHP_URL_PATH);
+        }
+
+        $listing->update($attributes);
+
+        return redirect()->route('listing.show', $listing)
+            ->with('success', 'Listing updated successfully');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Listing $listing): void
+    public function destroy(Listing $listing): RedirectResponse
     {
-        //
+        if (parse_url($listing->image, PHP_URL_PATH) != 'images/default.jpg') {
+            Storage::disk('s3')->delete($listing->image);
+        }
+
+        $listing->delete();
+
+        return redirect()->route('home')
+            ->with('success', 'Listing created successfully');
+
     }
 }

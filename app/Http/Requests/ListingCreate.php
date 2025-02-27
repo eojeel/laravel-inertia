@@ -18,7 +18,7 @@ class ListingCreate extends FormRequest
             'description' => 'required',
             'tags' => 'nullable|string|regex:/^[a-zA-Z0-9,]+$/',
             'link' => 'nullable|url',
-            'image' => 'nullable|file|max:3072|mimes:jpg,jpeg,png',
+            'image' => 'nullable|image|max:3072',
         ];
     }
 }

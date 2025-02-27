@@ -55,8 +55,7 @@ class Listing extends Model
     public function getImageAttribute(?string $value): ?string
     {
         $disk = Storage::disk('s3');
-        if($value && $disk->exists($value))
-        {
+        if ($value && $disk->exists($value)) {
             return $disk->url($value);
         }
 
