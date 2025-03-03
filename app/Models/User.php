@@ -10,9 +10,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable implements mustVerifyEmail
+final class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable;
+    use HasFactory;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -35,6 +36,16 @@ class User extends Authenticatable implements mustVerifyEmail
         'remember_token',
     ];
 
+    public function listing(): HasMany
+    {
+        return $this->hasMany(Listing::class);
+    }
+
+    public function isSuspended(): bool
+    {
+        return $this->role === 'suspended';
+    }
+
     /**
      * Get the attributes that should be cast.
      *
@@ -46,10 +57,5 @@ class User extends Authenticatable implements mustVerifyEmail
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    public function listing(): HasMany
-    {
-        return $this->hasMany(Listing::class);
     }
 }

@@ -61,7 +61,7 @@
         "dev": [
             "bun run dev"
         ],
-        "lint": "pint",
+        "lint": "pint --config pint.json",
         "refactor": "rector",
         "test:type-coverage": "pest --type-coverage --min=100",
         "test:lint": "pint --test",

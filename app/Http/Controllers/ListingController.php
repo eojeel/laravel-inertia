@@ -1,18 +1,33 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\NotSuspended;
 use App\Http\Requests\ListingCreate;
 use App\Models\Listing;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 
-class ListingController extends Controller
+final class ListingController extends Controller implements HasMiddleware
 {
+    public static function Middleware(): array
+    {
+        return [
+            new Middleware(
+                ['auth', 'verified', NotSuspended::class],
+                except: ['index', 'show']
+            ),
+        ];
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -65,7 +80,7 @@ class ListingController extends Controller
      */
     public function show(Listing $listing): Response
     {
-        return inertia::render('Listing/Show', [
+        return Inertia::render('Listing/Show', [
             'listing' => $listing,
             'user' => $listing->user->only('id', 'name', 'email'),
         ]);
@@ -76,7 +91,7 @@ class ListingController extends Controller
      */
     public function edit(Listing $listing): Response
     {
-        return inertia::render('Listing/Edit', [
+        return Inertia::render('Listing/Edit', [
             'listing' => $listing,
             'image' => Storage::url('images/default.jpg'),
         ]);
@@ -107,7 +122,7 @@ class ListingController extends Controller
      */
     public function destroy(Listing $listing): RedirectResponse
     {
-        if (parse_url($listing->image, PHP_URL_PATH) != 'images/default.jpg') {
+        if (parse_url($listing->image, PHP_URL_PATH) !== 'images/default.jpg') {
             Storage::disk('s3')->delete($listing->image);
         }
 

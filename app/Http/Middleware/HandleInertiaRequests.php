@@ -1,12 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
+use Override;
 
-class HandleInertiaRequests extends Middleware
+final class HandleInertiaRequests extends Middleware
 {
     /**
      * The root template that's loaded on the first page visit.
@@ -22,7 +25,7 @@ class HandleInertiaRequests extends Middleware
      *
      * @see https://inertiajs.com/asset-versioning
      */
-    #[\Override]
+    #[Override]
     public function version(Request $request): ?string
     {
         return parent::version($request);
@@ -35,12 +38,12 @@ class HandleInertiaRequests extends Middleware
      *
      * @return array<string, mixed>
      */
-    #[\Override]
+    #[Override]
     public function share(Request $request): array
     {
         return array_merge(parent::share($request), [
             'auth' => [
-                'user' => auth::check(),
+                'user' => Auth::check(),
             ],
         ]);
     }

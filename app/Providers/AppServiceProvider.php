@@ -12,13 +12,15 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Validation\Rules\Password;
+use Override;
 
 final class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
      */
-    #[\Override]
+    #[Override]
     public function register(): void
     {
         //
@@ -29,6 +31,7 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->configurePasswordValidation();
         $this->configureCommands();
         $this->configureModels();
         $this->configureDates();
@@ -42,7 +45,7 @@ final class AppServiceProvider extends ServiceProvider
     private function configureCommands(): void
     {
         DB::prohibitDestructiveCommands(
-            $this->app->isProduction(),
+            $this->app->isProduction()
         );
     }
 
@@ -59,9 +62,16 @@ final class AppServiceProvider extends ServiceProvider
      */
     private function configureModels(): void
     {
+        Model::shouldBeStrict(! $this->app->isProduction());
         Model::unguard();
+    }
 
-        Model::shouldBeStrict();
+    /**
+     * Configure the password validation rules.
+     */
+    private function configurePasswordValidation(): void
+    {
+        Password::defaults(fn () => $this->app->isProduction() ? Password::min(8)->uncompromised() : null);
     }
 
     /**
