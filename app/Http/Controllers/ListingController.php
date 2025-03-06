@@ -12,6 +12,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -53,6 +55,8 @@ final class ListingController extends Controller implements HasMiddleware
      */
     public function create(): Response
     {
+        Gate::authorize('create', Listing::class);
+
         return Inertia::render('Listing/Create', [
             'image' => Storage::url('images/default.jpg'),
         ]);
@@ -63,6 +67,8 @@ final class ListingController extends Controller implements HasMiddleware
      */
     public function store(ListingCreate $request): RedirectResponse
     {
+        Gate::authorize('create', Listing::class);
+
         $attributes = $request->validated();
 
         if ($attributes['image']) {
@@ -80,9 +86,12 @@ final class ListingController extends Controller implements HasMiddleware
      */
     public function show(Listing $listing): Response
     {
+        Gate::authorize('view', $listing);
+
         return Inertia::render('Listing/Show', [
             'listing' => $listing,
             'user' => $listing->user->only('id', 'name', 'email'),
+            'canModify' => Auth::User()?->can('modify', $listing) ?? false,
         ]);
     }
 
@@ -91,6 +100,8 @@ final class ListingController extends Controller implements HasMiddleware
      */
     public function edit(Listing $listing): Response
     {
+        Gate::authorize('modify', $listing);
+
         return Inertia::render('Listing/Edit', [
             'listing' => $listing,
             'image' => Storage::url('images/default.jpg'),
@@ -102,6 +113,8 @@ final class ListingController extends Controller implements HasMiddleware
      */
     public function update(ListingCreate $request, Listing $listing): RedirectResponse
     {
+        Gate::authorize('modify', $listing);
+
         $attributes = $request->validated();
 
         if ($attributes['image'] && $listing->image) {
@@ -122,6 +135,8 @@ final class ListingController extends Controller implements HasMiddleware
      */
     public function destroy(Listing $listing): RedirectResponse
     {
+        Gate::authorize('modify', $listing);
+
         if (parse_url($listing->image, PHP_URL_PATH) !== 'images/default.jpg') {
             Storage::disk('s3')->delete($listing->image);
         }

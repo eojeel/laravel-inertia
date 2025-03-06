@@ -41,9 +41,9 @@ final class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Listing::class);
     }
 
-    public function isSuspended(): bool
+    public function isNotSuspended(): bool
     {
-        return $this->role === 'suspended';
+        return $this->role !== 'suspended';
     }
 
     /**

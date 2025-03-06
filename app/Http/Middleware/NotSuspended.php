@@ -17,10 +17,10 @@ final class NotSuspended
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->user()->isSuspended()) {
-            return redirect()->route('dashboard');
+        if ($request->user()->isNotSuspended()) {
+            return $next($request);
         }
 
-        return $next($request);
+        return redirect()->route('dashboard');
     }
 }
