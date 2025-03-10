@@ -20,9 +20,10 @@ final class DatabaseSeeder extends Seeder
             'name' => 'John Doe',
             'email' => 'test@email.com',
             'password' => bcrypt('password'),
+            'role' => 'admin',
         ]);
 
-        User::factory(2)->create();
-        Listing::factory(30)->create();
+        User::factory(6)->create();
+        Listing::factory(50)->create();
     }
 }

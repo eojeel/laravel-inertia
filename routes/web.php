@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\AuthenticateController;
 use App\Http\Controllers\Auth\ConfirmPasswordController;
 use App\Http\Controllers\Auth\EmailVerificationController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ListingController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Middleware\Admin;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware('guest')->group(function () {
@@ -47,7 +49,10 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::get('/logout', [AuthenticateController::class, 'logout'])->name('logout');
+});
 
+Route::middleware(['auth', 'verified', Admin::class])->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
 });
 
 Route::get('/', [ListingController::class, 'index'])->name('home');

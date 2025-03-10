@@ -35,8 +35,8 @@ final class ListingController extends Controller implements HasMiddleware
      */
     public function index(Request $request): Response
     {
-        $listings = Listing::whereHas('user', static fn (Builder $q) => $q->where('role', '!=', 'suspended'))
-            ->with('user')
+        $listings = Listing::with('user')
+            ->whereHas('user', static fn (Builder $q) => $q->where('role', '!=', 'suspended'))
             ->where('approved', true)
             ->filter(request(['search', 'user_id', 'tag']))
             ->latest()

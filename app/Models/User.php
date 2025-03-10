@@ -46,6 +46,11 @@ final class User extends Authenticatable implements MustVerifyEmail
         return $this->role !== 'suspended';
     }
 
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
     /**
      * Get the attributes that should be cast.
      *

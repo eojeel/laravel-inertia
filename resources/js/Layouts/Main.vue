@@ -75,6 +75,13 @@ onUnmounted(() => {
                     <NavLink routeName="login">Login</NavLink>
                     <NavLink routeName="register">Register</NavLink>
                 </div>
+
+                <Link v-if="user.role === 'admin'"
+                    :href="route('admin.index')"
+                    class="hover:bg-slate-700 w-6 h-4 grid placed-items-center rounded-full hover:outline outline-1 outline-white">
+                    <i class="fa-solid fa-lock"></i>
+                </Link>
+
                 <button
                     @click="switchTheme"
                     class="hover:bg-slate-700 w-6 h-4 grid placed-items-center rounded-full hover:outline outline-1 outline-white">
