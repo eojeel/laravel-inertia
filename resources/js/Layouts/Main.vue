@@ -30,7 +30,7 @@ onUnmounted(() => {
         <nav class="p-6 mx-auto max-w-screen-lg flex items-center justify-between">
             <NavLink routeName="home">Home</NavLink>
             <div class="flex items-center space-x-6">
-                <div v-if="user" class="relative" ref="triggerRef" @click="show = !show">
+                <div v-if="user" class="relative flex items-center gap-4" ref="triggerRef" @click="show = !show">
                     <div class="flex items-center gap-2 px-3 py-1 rounded-lg hover:bg-slate-7000 cursor-pointer">
                         Account
                         <i class="fa-solid fa-angle-down" :class="{'fa-angle-down': !show, 'fa-angle-up': show}"></i>
@@ -68,6 +68,11 @@ onUnmounted(() => {
                             Logout
                         </Link>
                     </div>
+                    <Link v-if="user.role === 'admin'"
+                          :href="route('admin.index')"
+                          class="hover:bg-slate-700 w-6 h-4 grid placed-items-center rounded-full hover:outline outline-1 outline-white">
+                        <i class="fa-solid fa-lock"></i>
+                    </Link>
                 </div>
 
 
@@ -76,17 +81,12 @@ onUnmounted(() => {
                     <NavLink routeName="register">Register</NavLink>
                 </div>
 
-                <Link v-if="user.role === 'admin'"
-                    :href="route('admin.index')"
-                    class="hover:bg-slate-700 w-6 h-4 grid placed-items-center rounded-full hover:outline outline-1 outline-white">
-                    <i class="fa-solid fa-lock"></i>
-                </Link>
-
                 <button
                     @click="switchTheme"
                     class="hover:bg-slate-700 w-6 h-4 grid placed-items-center rounded-full hover:outline outline-1 outline-white">
-                <i class="fa-solid fa-circle-half-stroke"></i>
+                    <i class="fa-solid fa-circle-half-stroke"></i>
                 </button>
+
             </div>
         </nav>
     </header>

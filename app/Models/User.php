@@ -51,6 +51,18 @@ final class User extends Authenticatable implements MustVerifyEmail
         return $this->role === 'admin';
     }
 
+    public function scopeFilter($query, array $filter): void
+    {
+        if ($filter['search'] ?? false) {
+            $query->where(fn ($query) => $query->Where('name', 'like', '%'.$filter['search'].'%')
+                ->orWhere('email', 'like', '%'.$filter['search'].'%'));
+        }
+
+        if ($filter['role'] ?? false) {
+            $query->where('role', $filter['role']);
+        }
+    }
+
     /**
      * Get the attributes that should be cast.
      *

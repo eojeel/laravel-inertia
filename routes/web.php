@@ -51,9 +51,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/logout', [AuthenticateController::class, 'logout'])->name('logout');
 });
 
-Route::middleware(['auth', 'verified', Admin::class])->group(function () {
-    Route::get('/admin', [AdminController::class, 'index'])->name('admin.index');
-});
+Route::middleware(['auth', 'verified', Admin::class])->controller(AdminController::class)
+    ->group(function () {
+        Route::get('/admin', 'index')->name('admin.index');
+        Route::put('/admin/{user}/role', 'role')->name('admin.role');
+    });
+
 
 Route::get('/', [ListingController::class, 'index'])->name('home');
 Route::resource('listing', ListingController::class)->except('index');
