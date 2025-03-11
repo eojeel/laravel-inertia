@@ -27,6 +27,15 @@ const deleteListing = () => {
 
 <template>
     <head title="- Listing Details"/>
+
+    <div v-if="$page.props.auth.user.role === 'admin'"
+         class="bg-slate-800 text-white mb-6 p-6 rounded-md font-medium flex items-center justify-between">
+        <p> This listing is {{ listing.approved  ? "Approved" : "Disprove" }}</p>
+        <button class="bg-slate-600 px-3 py-1 rounded-md">
+            {{ listing.approved ? "Disapprove" : "Approve" }}
+        </button>
+    </div>
+
     <Container class="flex gap-4">
         <div class="w-1/4 rounded-md overflow-hidden">
             <img :src="listing.image ? `${listing.image}` : '/storage/images/listing/default.png'" class="w-full h-full object-cover object-center">

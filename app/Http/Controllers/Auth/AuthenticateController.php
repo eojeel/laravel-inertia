@@ -8,13 +8,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Inertia\Inertia;
 use Inertia\Response;
 
 final class AuthenticateController extends Controller
 {
     public function show(): Response
     {
-        return Inertia('Auth/Login', [
+        return Inertia::render('Auth/Login', [
             'status' => session('status'),
         ]);
     }
@@ -23,7 +24,7 @@ final class AuthenticateController extends Controller
     {
         $attributes = $request->validated();
 
-        if (Auth::attempt($attributes, $request->remember ?? false)) {
+        if (Auth::attempt($attributes, $attributes['remember'])) {
             $request->session()->regenerate();
 
             return redirect()->intended('dashboard');

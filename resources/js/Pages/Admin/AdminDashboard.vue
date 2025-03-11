@@ -4,6 +4,7 @@ import PaginationLinks from "../../Components/PaginationLinks.vue";
 import Message from "../../Components/Message.vue";
 import InputField from "../../Components/InputField.vue";
 import RoleSelect from "../../Components/RoleSelect.vue";
+import Link from "../../Components/Link.vue";
 
 defineProps({
     users: Object,
@@ -97,7 +98,7 @@ const toggleRole = (event) => {
                 </div>
             </td>
             <td class="w-1/6 py-5 px-3 text-right">
-                Link
+                <Link class="fa-solid fa-up-right-from-square px-3 text-indigo-500" :href="route('admin.show', user.id)"></Link>
             </td>
         </tr>
         </tbody>
