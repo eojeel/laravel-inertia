@@ -2,11 +2,13 @@
 import Container from "../../Components/Container.vue";
 import {router} from "@inertiajs/vue3";
 import Link from "../../Components/Link.vue";
+import Message from "../../Components/Message.vue";
 
 const props = defineProps({
     listing: Object,
     user: Object,
     canModify: Boolean,
+    status: String
 })
 
 const params = route().params;
@@ -23,15 +25,26 @@ const deleteListing = () => {
         router.delete(route('listing.destroy', props.listing.id));
     }
 }
+
+const toggleApproved = () => {
+    let msg = props.listing.approved ? 'disapprove' : 'approve';
+    if(confirm(`Are you sure you want to ${msg} this listing?`)) {
+        router.put(route('listing.toggleApproval', props.listing.id
+        ));
+    }
+};
+
 </script>
 
 <template>
     <head title="- Listing Details"/>
 
+    <message :message="status"/>
+
     <div v-if="$page.props.auth.user.role === 'admin'"
          class="bg-slate-800 text-white mb-6 p-6 rounded-md font-medium flex items-center justify-between">
         <p> This listing is {{ listing.approved  ? "Approved" : "Disprove" }}</p>
-        <button class="bg-slate-600 px-3 py-1 rounded-md">
+        <button @click.prevent="toggleApproved" class="bg-slate-600 px-3 py-1 rounded-md">
             {{ listing.approved ? "Disapprove" : "Approve" }}
         </button>
     </div>

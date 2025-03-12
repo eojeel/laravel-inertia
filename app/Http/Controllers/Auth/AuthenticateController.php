@@ -24,7 +24,8 @@ final class AuthenticateController extends Controller
     {
         $attributes = $request->validated();
 
-        if (Auth::attempt($attributes, $attributes['remember'])) {
+        if (Auth::attempt($attributes, $request->remember ?? false)) {
+
             $request->session()->regenerate();
 
             return redirect()->intended('dashboard');

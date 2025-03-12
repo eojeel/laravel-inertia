@@ -49,6 +49,10 @@ final class Listing extends Model
         if (! empty($filters['tag'])) {
             $query->where('tags', 'like', '%'.request('tag').'%');
         }
+
+        if (! empty($filters['approved'])) {
+            $query->where('approved', ! $filters['approved']);
+        }
     }
 
     /**
