@@ -34,6 +34,7 @@ const toggleApproved = () => {
     }
 };
 
+console.log(props);
 </script>
 
 <template>
@@ -41,7 +42,7 @@ const toggleApproved = () => {
 
     <message :message="status"/>
 
-    <div v-if="$page.props.auth.user.role === 'admin'"
+    <div v-if="$page.props.auth.user?.role === 'admin'"
          class="bg-slate-800 text-white mb-6 p-6 rounded-md font-medium flex items-center justify-between">
         <p> This listing is {{ listing.approved  ? "Approved" : "Disprove" }}</p>
         <button @click.prevent="toggleApproved" class="bg-slate-600 px-3 py-1 rounded-md">

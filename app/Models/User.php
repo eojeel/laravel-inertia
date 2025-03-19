@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -51,10 +52,15 @@ final class User extends Authenticatable implements MustVerifyEmail
         return $this->role === 'admin';
     }
 
-    public function scopeFilter($query, array $filter): void
+    /**
+     * Filter the query based on the given search query.
+     * @param  Builder<Listing>  $query
+     * @param  array<string, string>  $filters
+     */
+    public function scopeFilter(Builder $query, array $filter): void
     {
         if ($filter['search'] ?? false) {
-            $query->where(fn ($query) => $query->Where('name', 'like', '%'.$filter['search'].'%')
+            $query->where(fn (Builder $query) => $query->Where('name', 'like', '%'.$filter['search'].'%')
                 ->orWhere('email', 'like', '%'.$filter['search'].'%'));
         }
 

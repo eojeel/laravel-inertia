@@ -10,8 +10,8 @@ use function Pest\Laravel\post;
 
 it('can view the loging page', function () {
 
-get(route('login'))->assertStatus(200);
-    });
+    get(route('login'))->assertStatus(200);
+});
 
 it('a user can login', function () {
 

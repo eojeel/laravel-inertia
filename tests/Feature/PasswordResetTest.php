@@ -13,9 +13,9 @@ use function Pest\Laravel\post;
 
 it('can view the password reset page', function () {
 
-get(route('password.request'))->assertStatus(200);
+    get(route('password.request'))->assertStatus(200);
 
-    });
+});
 
 it('can send the rest password email', function () {
 
