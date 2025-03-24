@@ -62,17 +62,17 @@ it('can reset a password', function () {
     $response = post(route('password.update'), [
         'token' => $token,
         'email' => $user->email,
-        'password' => $password = fake()->password,
+        'password' => $password = fake()->password(8),
         'password_confirmation' => $password,
     ]);
+
+    $response->assertRedirect(route('login'))
+        ->assertSessionHas('status', __(Password::PASSWORD_RESET));
 
     // Assert that the PasswordReset event was dispatched for the correct user.
     Event::assertDispatched(PasswordReset::class, static function ($event) use ($user) {
         return $event->user->id === $user->id;
     });
-
-    $response->assertRedirect(route('login'))
-        ->assertSessionHas('status', __(Password::PASSWORD_RESET));
 
     // Assert the user's password was actually updated
     $this->assertDatabaseHas('users', [

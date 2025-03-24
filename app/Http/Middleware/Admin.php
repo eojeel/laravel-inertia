@@ -18,7 +18,7 @@ final class Admin
     public function handle(Request $request, Closure $next): Response
     {
         if (! $request->user()->isAdmin()) {
-            return back();
+            abort(Response::HTTP_FORBIDDEN);
         }
 
         return $next($request);
