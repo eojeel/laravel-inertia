@@ -9,9 +9,13 @@ use App\Models\User;
 
 final class ListingPolicy
 {
-    public function before(User $user): bool
+    public function before(User $user): ?bool
     {
-        return $user->isAdmin();
+        if ($user->isAdmin()) {
+            return true;
+        }
+
+        return null;
     }
 
     public function view(?User $user, Listing $listing): bool

@@ -15,6 +15,17 @@ final class Listing extends Model
     /** @use HasFactory<\Database\Factories\ListingFactory> */
     use HasFactory;
 
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::deleting(function (Listing $listing) {
+            if ($listing->image && parse_url($listing->getRawOriginal('image'), PHP_URL_PATH) !== 'images/default.jpg') {
+                Storage::disk('s3')->delete($listing->getRawOriginal('image'));
+            }
+        });
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
