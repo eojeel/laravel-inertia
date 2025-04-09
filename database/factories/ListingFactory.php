@@ -25,7 +25,7 @@ final class ListingFactory extends Factory
             'title' => fake()->sentence(),
             'description' => fake()->paragraph(),
             'tags' => fake()->word(),
-            'image' => Storage::disk('s3')->url('images/default.jpg'),
+            'image' => Storage::fake('s3')->url('images/default.jpg'),
             'approved' => 1,
         ];
     }

@@ -118,7 +118,7 @@ final class ListingController extends Controller implements HasMiddleware
         $attributes = $request->validated();
 
         if ($attributes['image'] && $listing->image) {
-            Storage::disk('s3')->delete($listing->image);
+            Storage::fake('s3')->delete($listing->image);
             $attributes['image'] = Storage::disk('s3')->putFile('images/listing', $attributes['image']);
         } else {
             $attributes['image'] = parse_url($listing->image, PHP_URL_PATH);

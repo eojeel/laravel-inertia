@@ -54,6 +54,7 @@ final class User extends Authenticatable implements MustVerifyEmail
 
     /**
      * Filter the query based on the given search query.
+     *
      * @param  Builder<Listing>  $query
      * @param  array<string, string>  $filters
      */

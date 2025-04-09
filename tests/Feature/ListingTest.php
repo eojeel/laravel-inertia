@@ -165,13 +165,39 @@ it('can update listing', function () {
 
     $this->assertDatabaseHas('listings', [
         'id' => $this->listing->id,
+        'title' => $data['title'],
+        'description' => $data['description'],
+        'tags' => $data['tags'],
+        'link' => $data['link'],
+    ]);
+
+    Storage::disk('s3')->assertExists('images/listing/'.$file->hashName());
+});
+
+it('can update listing but keep image', function () {
+    $file = UploadedFile::fake()->image('new-listing.jpg');
+    $data = [
         'title' => 'Updated Title',
         'description' => 'Updated Description',
         'tags' => 'updated,listing',
         'link' => 'https://updated-example.com',
+        'image' => '',
+    ];
+
+    actingAs($this->user)
+        ->put(route('listing.update', $this->listing), $data)
+        ->assertRedirect();
+
+
+    $this->assertDatabaseHas('listings', [
+        'id' => $this->listing->id,
+        'title' => $data['title'],
+        'description' => $data['description'],
+        'tags' => $data['tags'],
+        'link' => $data['link'],
+        'image' =>  $this->listing->image,
     ]);
 
-    Storage::disk('s3')->assertExists('images/listing/'.$file->hashName());
 });
 
 it('validates listing update', function () {
@@ -210,7 +236,6 @@ it('cannot delete listing for non owner', function () {
 });
 
 it('deletes image from storage when listing is deleted', function () {
-    Storage::fake('s3');
 
     $file = UploadedFile::fake()->image('listing.jpg');
     $path = Storage::disk('s3')->putFile('images/listing', $file);
@@ -229,4 +254,11 @@ it('deletes image from storage when listing is deleted', function () {
 
     // The listing should be deleted from the database
     expect(Listing::find($this->listing->id))->toBeNull();
+});
+
+it('cannot view listing for suspended user', function () {
+
+    actingAs($this->suspendedUser)
+        ->get(route('listing.create'))
+        ->assertRedirect('/dashboard');
 });
