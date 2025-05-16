@@ -16,7 +16,7 @@ declare(strict_types=1);
 uses(
     Tests\TestCase::class,
     Illuminate\Foundation\Testing\RefreshDatabase::class,
-)->in('Feature', 'Unit','Infra');
+)->in('Feature', 'Unit', 'Infra');
 
 /*
 |--------------------------------------------------------------------------
@@ -43,8 +43,3 @@ expect()->extend('toBeOne', function () {
 | global functions to help you to reduce the number of lines of code in your test files.
 |
 */
-
-function something()
-{
-    // ..
-}

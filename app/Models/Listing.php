@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
+use Override;
 
 final class Listing extends Model
 {
@@ -29,7 +30,7 @@ final class Listing extends Model
     public function scopeFilter(Builder $query, array $filters): void
     {
         if (! empty($filters['search'])) {
-            $query->where(function (Builder $query) use ($filters) {
+            $query->where(function (Builder $query) use ($filters): void {
                 $query->where('title', 'like', '%'.$filters['search'].'%')
                     ->orWhere('description', 'like', '%'.$filters['search'].'%');
             });
@@ -43,7 +44,7 @@ final class Listing extends Model
             $query->where('tags', 'like', '%'.$filters['tag'].'%'); // Use the filter value
         }
 
-        if (! empty($filters['approved'])) {
+        if (isset($filters['approved'])) {
             $query->where('approved', $filters['approved']); // Use the filter value
         }
     }
@@ -61,12 +62,13 @@ final class Listing extends Model
         return $disk->url('images/default.jpg');
     }
 
+    #[Override]
     protected static function boot(): void
     {
         parent::boot();
 
-        self::deleting(function (Listing $listing) {
-            if ($listing->image && parse_url($listing->getRawOriginal('image'), PHP_URL_PATH) !== 'images/default.jpg') {
+        self::deleting(function (Listing $listing): void {
+            if ($listing->image && parse_url((string) $listing->getRawOriginal('image'), PHP_URL_PATH) !== 'images/default.jpg') {
                 Storage::disk('s3')->delete($listing->getRawOriginal('image'));
             }
         });

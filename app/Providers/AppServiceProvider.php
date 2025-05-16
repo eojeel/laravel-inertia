@@ -79,7 +79,7 @@ final class AppServiceProvider extends ServiceProvider
      */
     private function configureUrls(): void
     {
-        if (!App::environment('local')) {
+        if (! App::environment('local')) {
             URL::forceScheme('https');
         }
     }
