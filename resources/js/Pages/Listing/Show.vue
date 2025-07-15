@@ -95,7 +95,7 @@ console.log(props);
                     <div class="flex items-center mb-2 gap-2">
                         <i class="fa-solid fa-user"></i>
                         <p>User:</p>
-                        <Link :href="route('home', {user_id: user.id})" class="text-link">{{ user.name }}</Link>
+                        <Link :href="route('home', {user_id: user.id})" :name="user.name" class="text-link"></Link>
                     </div>
             </div>
 

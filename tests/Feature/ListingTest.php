@@ -7,23 +7,24 @@ use App\Models\User;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Testing\AssertableInertia;
-use function Pest\Laravel\{get, post, put, delete};
+
 use function Pest\Laravel\actingAs;
+use function Pest\Laravel\get;
 
 beforeEach(function () {
     $this->user = User::factory()->create([
         'email_verified_at' => now(),
-        'role' => 'user'
+        'role' => 'user',
     ]);
 
     $this->suspendedUser = User::factory()->create([
         'role' => 'suspended',
-        'email_verified_at' => now()
+        'email_verified_at' => now(),
     ]);
 
     $this->listing = Listing::factory()->create([
         'user_id' => $this->user->id,
-        'approved' => true
+        'approved' => true,
     ]);
 
     Storage::fake('s3');
@@ -188,14 +189,13 @@ it('can update listing but keep image', function () {
         ->put(route('listing.update', $this->listing), $data)
         ->assertRedirect();
 
-
     $this->assertDatabaseHas('listings', [
         'id' => $this->listing->id,
         'title' => $data['title'],
         'description' => $data['description'],
         'tags' => $data['tags'],
         'link' => $data['link'],
-        'image' =>  $this->listing->image,
+        'image' => $this->listing->image,
     ]);
 
 });
@@ -243,7 +243,7 @@ it('deletes image from storage when listing is deleted', function () {
     expect(Storage::disk('s3')->exists($path))->toBeTrue();
 
     $this->listing->forceFill([
-        'image' => $path
+        'image' => $path,
     ])->save();
 
     actingAs($this->user)
@@ -266,11 +266,11 @@ it('cannot view listing for suspended user', function () {
 it('admin can toggle listing approval', function () {
     $admin = User::factory()->create([
         'email_verified_at' => now(),
-        'role' => 'admin'
+        'role' => 'admin',
     ]);
 
     $listing = Listing::factory()->create([
-        'approved' => false
+        'approved' => false,
     ]);
 
     actingAs($admin)
@@ -279,18 +279,18 @@ it('admin can toggle listing approval', function () {
 
     $this->assertDatabaseHas('listings', [
         'id' => $listing->id,
-        'approved' => true
+        'approved' => true,
     ]);
 });
 
 it('non-admin cannot toggle listing approval', function () {
     $regularUser = User::factory()->create([
         'email_verified_at' => now(),
-        'role' => 'user'
+        'role' => 'user',
     ]);
 
     $listing = Listing::factory()->create([
-        'approved' => false
+        'approved' => false,
     ]);
 
     actingAs($regularUser)
@@ -299,22 +299,22 @@ it('non-admin cannot toggle listing approval', function () {
 
     $this->assertDatabaseHas('listings', [
         'id' => $listing->id,
-        'approved' => false
+        'approved' => false,
     ]);
 });
 
 it('directly tests the approve policy method', function () {
     $admin = User::factory()->create([
         'email_verified_at' => now(),
-        'role' => 'admin'
+        'role' => 'admin',
     ]);
 
     $regularUser = User::factory()->create([
         'email_verified_at' => now(),
-        'role' => 'user'
+        'role' => 'user',
     ]);
 
-    $policy = new \App\Policies\ListingPolicy();
+    $policy = new App\Policies\ListingPolicy;
 
     // Test with admin user - should return true
     expect($policy->approve($admin))->toBeTrue();
@@ -330,12 +330,12 @@ it('filters listings by user_id', function () {
 
     $listing1 = Listing::factory()->create([
         'user_id' => $user1->id,
-        'approved' => true
+        'approved' => true,
     ]);
 
     $listing2 = Listing::factory()->create([
         'user_id' => $user2->id,
-        'approved' => true
+        'approved' => true,
     ]);
 
     // Test filtering by user_id
@@ -349,12 +349,12 @@ it('filters listings by tag', function () {
     // Create listings with different tags
     $listing1 = Listing::factory()->create([
         'tags' => 'php,laravel,coding',
-        'approved' => true
+        'approved' => true,
     ]);
 
     $listing2 = Listing::factory()->create([
         'tags' => 'vue,javascript,frontend',
-        'approved' => true
+        'approved' => true,
     ]);
 
     // Test filtering by tag
@@ -370,11 +370,11 @@ it('filters listings by tag', function () {
 it('filters listings by approval status', function () {
     // Create listings with different approval statuses
     $approvedListing = Listing::factory()->create([
-        'approved' => true
+        'approved' => true,
     ]);
 
     $unapprovedListing = Listing::factory()->create([
-        'approved' => false
+        'approved' => false,
     ]);
 
     // Test filtering by approved status
