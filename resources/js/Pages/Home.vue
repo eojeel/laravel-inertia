@@ -65,7 +65,7 @@ const username = params.user_id ? props.listings.data.find(i => i.user_id === Nu
     </div>
 
     <div v-if="Object.keys(listings.data).length">
-        <div class="grid grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <div v-for="listing in listings.data" :key="listing.id">
                 <Card :listing="listing"></Card>
             </div>
